@@ -5,7 +5,7 @@
   "main": "index.js",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/rzlyp/instagram-scraper.git"
+    "url": "git+https://github.com/rzlyp/instagram-scraping.git"
   },
   "scripts": {
     "test": "mocha -R spec"
@@ -19,9 +19,9 @@
   "author": "Rizal Yogi Pratama",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/rzlyp/instagram-scraper/issues"
+    "url": "https://github.com/rzlyp/instagram-scraping/issues"
   },
-  "homepage": "https://github.com/rzlyp/instagram-scraper#readme",
+  "homepage": "https://github.com/rzlyp/instagram-scraping#readme",
   "devDependencies": {
     "chai": "3.5.0",
     "mocha": "3.1.2",
