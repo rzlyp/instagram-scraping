@@ -1,4 +1,4 @@
-instagram-tagscrape
+instagram-scraping
 ==============
 NodeJS module for loading posts from Instagram by hashtag, individual post pages and locationpages without API access by means of scraping.
 
@@ -9,7 +9,7 @@ Instagram has gone to great lengths to prevent scraping and other unauthorized a
 
 ## Installation
 
-`npm install instagram-scraper`
+`npm install instagram-scraping`
 
 ## Usage
 
@@ -18,7 +18,7 @@ The most basic usage will allow you to load the first 17 posts for any given has
 ### Tage page scraping
 
 ```javascript
-var ig = require('instagram-scraper');
+var ig = require('instagram-scraping');
 
 ig.scrapeTag('veranda').then(function(result){
     console.dir(result);
@@ -29,8 +29,8 @@ Example response:
 
 ```json
 {
-	total: 54,
-	medias: [
+	"total": 54,
+	"medias": [
 	{
 	"media_id": "1684684359967334824",
 	"text": "Selamat siang komuni!🙋 Sportakular hadir lagi untuk mengawali 2018 kita ini dengan penuh semangat dan kebersamaan, berikut jadwal-jadwalnya : sportakular Voly Kamis,4 Januari 2018 18.00 sd selesai Lap.telkom pinggir monumen Sportakular Futsal Jumat , 5 Januari 2018 17.30-20.00 Lap. Meteor Sportakular Badminton Sabtu,6 Januari2018 19.00-21.00 Lap.Pdam (pinggir ITB) Dicatet ya setiap jadwal kegiatannya, biar tidak terlewatkan karena sayang banget untuk dilewatkan. 😉 dan untuk cabang olahraga lain bakalan mimin share lagi so stay tuned dan selalu ingat: 'Berpartisipasi = Auto Kece😎😎' salam olahraga! #himaik #Ikberaniberkarya #salamsatuik #menujuIKsehat #unikom #sportakular",
@@ -59,6 +59,4 @@ Example response:
 },
     ....
 }
-```
-
 ```
