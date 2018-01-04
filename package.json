@@ -1,0 +1,35 @@
+{
+  "name": "instagram-scraper",
+  "version": "1.0.0",
+  "description": "NPM module for loading media by hashtag without instagram API",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rzlyp/instagram-scraper.git"
+  },
+  "scripts": {
+    "test": "mocha -R spec"
+  },
+  "keywords": [
+      "instagram",
+      "hashtag",
+      "scraping",
+      "scrape"
+    ],
+  "author": "Rizal Yogi Pratama",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/rzlyp/instagram-scraper/issues"
+  },
+  "homepage": "https://github.com/rzlyp/instagram-scraper#readme",
+  "devDependencies": {
+    "chai": "3.5.0",
+    "mocha": "3.1.2",
+    "nock": "9.0.2"
+  },
+  "dependencies": {
+    "async": "^2.6.0",
+    "bluebird": "^3.5.1",
+    "request": "^2.83.0"
+  }
+}
