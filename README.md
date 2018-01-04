@@ -1,4 +1,4 @@
-instagram-tagscrape
+instagram-scraping
 ==============
 NodeJS module for loading posts from Instagram by hashtag, individual post pages and locationpages without API access by means of scraping.
 
@@ -9,7 +9,7 @@ Instagram has gone to great lengths to prevent scraping and other unauthorized a
 
 ## Installation
 
-`npm install instagram-scraper`
+`npm install instagram-scraping`
 
 ## Usage
 
@@ -18,7 +18,7 @@ The most basic usage will allow you to load the first 17 posts for any given has
 ### Tage page scraping
 
 ```javascript
-var ig = require('instagram-scraper');
+var ig = require('instagram-scraping');
 
 ig.scrapeTag('veranda').then(function(result){
     console.dir(result);
