@@ -8,16 +8,16 @@ var request = require('request'),
 
 exports.deepScrapeTagPage = function(tag) {
     return new Promise(function(resolve, reject){
-        exports.scrapeTagPage(tag).then(function(tagPage){
-            return Promise.map(tagPage.media, function(media, i, len) {
-                return exports.scrapePostPage(media.code).then(function(postPage){
-                    tagPage.media[i] = postPage;
+        exports.scrapeTag(tag).then(function(tagPage){
+            return Promise.map(tagPage.medias, function(media, i, len) {
+                return exports.scrapePostCode(media.shortcode).then(function(postPage){
+                    tagPage.medias[i] = postPage;
                     if (postPage.location != null && postPage.location.has_public_page) {
-                        return exports.scrapeLocationPage(postPage.location.id).then(function(locationPage){
+                        return exports.scrapeLocation(postPage.location.id).then(function(locationPage){
                             tagPage.media[i].location = locationPage;
                         })
                         .catch(function(err) {
-                            console.log("An error occurred calling scrapeLocationPage inside deepScrapeTagPage" + ":" + err);
+                            console.log("An error occurred calling scrapeLocation inside deepScrapeTagPage" + ":" + err);
                         });
                     }
                 })
@@ -60,6 +60,7 @@ exports.scrapeTag = function(tag) {
                     
                             medias.push({
                                 media_id : post.node.id,
+                                shortcode : post.node.shortcode,
                                 text : post.node.edge_media_to_caption.edges[0].node.text,
                                 comment_count : post.node.edge_media_to_comment,
                                 like_count : post.node.edge_liked_by,
@@ -87,6 +88,42 @@ exports.scrapeTag = function(tag) {
     });
 };
 
+exports.scrapePostCode = function(code) {
+    return new Promise(function(resolve, reject){
+        if (!code) return reject(new Error('Argument "code" must be specified'));
+
+        request(postURL + code, function(err, response, body){
+            var data = scrape(body);
+            if (data && data.entry_data && 
+                data.entry_data.PostPage[0] && 
+                data.entry_data.PostPage[0].graphql && 
+                data.entry_data.PostPage[0].graphql.shortcode_media) {
+                resolve(data.entry_data.PostPage[0].graphql.shortcode_media); 
+            }
+            else {
+                reject(new Error('Error scraping post page "' + code + '"'));
+            }
+        });
+    });
+}
+exports.scrapeLocation = function(id) {
+    return new Promise(function(resolve, reject){
+        if (!id) return reject(new Error('Argument "id" must be specified'));
+        
+        request(locURL + id, function(err, response, body){
+            var data = scrape(body);
+
+            if (data && data.entry_data && 
+                data.entry_data.LocationsPage[0] && 
+                data.entry_data.LocationsPage[0].location) {
+                resolve(data.entry_data.LocationsPage[0].location);
+            }
+            else {
+                reject(new Error('Error scraping location page "' + id + '"'));
+            }
+        });
+    });
+}
 var scrape = function(html) {
     try {
         var dataString = html.match(dataExp)[1];
