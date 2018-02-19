@@ -8,7 +8,7 @@ var request = require('request'),
 
 exports.deepScrapeTagPage = function(tag) {
     return new Promise(function(resolve, reject){
-        exports.scrapeTagPage(tag).then(function(tagPage){
+        exports.scrapeTag(tag).then(function(tagPage){
             return Promise.map(tagPage.media, function(media, i, len) {
                 return exports.scrapePostPage(media.code).then(function(postPage){
                     tagPage.media[i] = postPage;
