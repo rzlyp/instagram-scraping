@@ -1,6 +1,6 @@
 instagram-scraping
 ==============
-NodeJS module for loading posts from Instagram by hashtag, individual post pages and locationpages without API access by means of scraping.
+NodeJS module for loading posts from Instagram by hashtag without API access by means of scraping.
 
 	
 
@@ -45,16 +45,16 @@ Example response:
 	"date": 1515050047,
 	"thumbnail": "https://instagram.fpku1-1.fna.fbcdn.net/t51.2885-15/s640x640/sh0.08/e35/c0.134.1076.1076/25024357_207155156521690_1744670180115480576_n.jpg",
 	"thumbnail_resource": [
-	{
-	"src": "https://instagram.fpku1-1.fna.fbcdn.net/t51.2885-15/s150x150/e35/c0.134.1076.1076/25024357_207155156521690_1744670180115480576_n.jpg",
-	"config_width": 150,
-	"config_height": 150
-	},
-	{
-	"src": "https://instagram.fpku1-1.fna.fbcdn.net/t51.2885-15/s240x240/e35/c0.134.1076.1076/25024357_207155156521690_1744670180115480576_n.jpg",
-	"config_width": 240,
-	"config_height": 240
-	},
+		{
+		"src": "https://instagram.fpku1-1.fna.fbcdn.net/t51.2885-15/s150x150/e35/c0.134.1076.1076/25024357_207155156521690_1744670180115480576_n.jpg",
+		"config_width": 150,
+		"config_height": 150
+		},
+		{
+		"src": "https://instagram.fpku1-1.fna.fbcdn.net/t51.2885-15/s240x240/e35/c0.134.1076.1076/25024357_207155156521690_1744670180115480576_n.jpg",
+		"config_width": 240,
+		"config_height": 240
+		},
 	]
 },
     ....
