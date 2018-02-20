@@ -13,14 +13,14 @@ Instagram has gone to great lengths to prevent scraping and other unauthorized a
 
 ## Usage
 
-The most basic usage will allow you to load the first 17 posts for any given hashtag with basic info and URLs to the full post media.
+There are some limitation of loading instagram data, but enjoy it. i hope it's will help you.
 
-### Tage page scraping
+### Tag Scraping Media
 
 ```javascript
 var ig = require('instagram-scraping');
 
-ig.scrapeTag('veranda').then(function(result){
+ig.scrapeTag('veranda').then((result)=>{
     console.dir(result);
 })
 ```
@@ -59,4 +59,12 @@ Example response:
 },
     ....
 }
+```
+### Deep Tag Scraping
+
+```javascript
+
+ig.deepScrapeTagPage('veranda').then((result)=>{
+    console.dir(result);
+})
 ```
