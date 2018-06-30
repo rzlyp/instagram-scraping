@@ -61,7 +61,7 @@ exports.scrapeTag = function(tag) {
                             medias.push({
                                 media_id : post.node.id,
                                 shortcode : post.node.shortcode,
-                                text : post.node.edge_media_to_caption.edges[0].node.text,
+                                text : post.node.edge_media_to_caption.edges[0] && post.node.edge_media_to_caption.edges[0].node.text,
                                 comment_count : post.node.edge_media_to_comment,
                                 like_count : post.node.edge_liked_by,
                                 display_url : post.node.display_url,
