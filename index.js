@@ -1,10 +1,48 @@
 var request = require('request'),
     Promise = require('bluebird'),
     async   = require('async'),
+    userURL = 'https://www.instagram.com/',
     listURL = 'https://www.instagram.com/explore/tags/',
     postURL = 'https://www.instagram.com/p/',
     locURL  = 'https://www.instagram.com/explore/locations/',
     dataExp = /window\._sharedData\s?=\s?({.+);<\/script>/;
+
+exports.scrapeUserPage = function(username) {
+    return new Promise(function(resolve, reject) {
+        if(!username) return reject(new Error('Argument "username" must be specified'));
+        request(userURL + username, function(err, response, body){
+            var data = scrape(body);
+            if (data && data.entry_data && 
+                data.entry_data.ProfilePage && 
+                data.entry_data.ProfilePage[0] && 
+                data.entry_data.ProfilePage[0].graphql && 
+                data.entry_data.ProfilePage[0].graphql.user && 
+                data.entry_data.ProfilePage[0].graphql.user.edge_owner_to_timeline_media &&
+                data.entry_data.ProfilePage[0].graphql.user.edge_owner_to_timeline_media.count > 0 && data.entry_data.ProfilePage[0].graphql.user.edge_owner_to_timeline_media.edges) {
+                    var edges =  data.entry_data.ProfilePage[0].graphql.user.edge_owner_to_timeline_media.edges; 
+                    async.waterfall([
+                        (callback)=>{
+                            var medias = [];
+                            edges.forEach((post)=>{
+                                if(post.node.__typename === 'GraphImage') {
+                                    medias.push(exports.scrapePostData(post))
+                                }
+                            });
+                            callback(null, medias);
+                        }    
+                    ], (err, results)=>{
+                            resolve({
+                                total : results.length,
+                                medias : results
+                            })   
+                    })
+            }
+            else {
+                reject(new Error('Error scraping user page "' + username + '"'));
+            }
+        });
+    });
+};
 
 exports.deepScrapeTagPage = function(tag) {
     return new Promise(function(resolve, reject){
@@ -48,28 +86,17 @@ exports.scrapeTag = function(tag) {
         request(options, function(err, response, body){
             if (err) return reject(err);
 
-            var data = scrape(body)
-            if (data) {
-                var media = data.entry_data.TagPage[0].graphql.hashtag.edge_hashtag_to_media;
+            var data = scrape(body);
+            var media = data.entry_data && data.entry_data.TagPage && data.entry_data.TagPage[0].graphql.hashtag.edge_hashtag_to_media;
+
+            if (data && media) {
                 var edges = media.edges;
 
                 async.waterfall([
                     (callback)=>{
-                         var medias = [];
+                        var medias = [];
                          edges.forEach((post)=>{
-                    
-                            medias.push({
-                                media_id : post.node.id,
-                                shortcode : post.node.shortcode,
-                                text : post.node.edge_media_to_caption.edges[0] && post.node.edge_media_to_caption.edges[0].node.text,
-                                comment_count : post.node.edge_media_to_comment,
-                                like_count : post.node.edge_liked_by,
-                                display_url : post.node.display_url,
-                                owner_id : post.node.owner.id,
-                                date : post.node.taken_at_timestamp,
-                                thumbnail : post.node.thumbnail_src,
-                                thumbnail_resource : post.node.thumbnail_resources
-                            })
+                            medias.push(exports.scrapePostData(post))
                         });
                          callback(null, medias);
                     }    
@@ -79,7 +106,7 @@ exports.scrapeTag = function(tag) {
                             medias : results
                         })   
                 })
-                
+
             }
             else {
                 reject(new Error('Error scraping tag page "' + tag + '"'));
@@ -87,6 +114,21 @@ exports.scrapeTag = function(tag) {
         })
     });
 };
+
+exports.scrapePostData = function(post) {
+    return {
+        media_id : post.node.id,
+        shortcode : post.node.shortcode,
+        text : post.node.edge_media_to_caption.edges[0] && post.node.edge_media_to_caption.edges[0].node.text,
+        comment_count : post.node.edge_media_to_comment.count,
+        like_count : post.node.edge_liked_by.count,
+        display_url : post.node.display_url,
+        owner_id : post.node.owner.id,
+        date : post.node.taken_at_timestamp,
+        thumbnail : post.node.thumbnail_src,
+        thumbnail_resource : post.node.thumbnail_resources
+    }
+}
 
 exports.scrapePostCode = function(code) {
     return new Promise(function(resolve, reject){
@@ -106,6 +148,7 @@ exports.scrapePostCode = function(code) {
         });
     });
 }
+
 exports.scrapeLocation = function(id) {
     return new Promise(function(resolve, reject){
         if (!id) return reject(new Error('Argument "id" must be specified'));
