@@ -50,7 +50,7 @@ exports.deepScrapeTagPage = function(tag) {
             return Promise.map(tagPage.medias, function(media, i, len) {
                 return exports.scrapePostCode(media.shortcode).then(function(postPage){
                     tagPage.medias[i] = postPage;
-                    if (postPage.location != null && postPage.location.has_public_page) {
+                    if ((typeof postPage.location !== "undefined") && postPage.location.has_public_page) {
                         return exports.scrapeLocation(postPage.location.id).then(function(locationPage){
                             tagPage.media[i].location = locationPage;
                         })
@@ -156,9 +156,7 @@ exports.scrapeLocation = function(id) {
         request(locURL + id, function(err, response, body){
             var data = scrape(body);
 
-            if (data && data.entry_data && 
-                data.entry_data.LocationsPage[0] && 
-                data.entry_data.LocationsPage[0].location) {
+            if (data && data.entry_data && (typeof data.entry_data.LocationsPage !== "undefined")){
                 resolve(data.entry_data.LocationsPage[0].location);
             }
             else {

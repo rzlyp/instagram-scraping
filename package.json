@@ -1,6 +1,6 @@
 {
   "name": "instagram-scraping",
-  "version": "1.0.1",
+  "version": "1.0.6",
   "description": "NPM module for loading media by hashtag without instagram API",
   "main": "index.js",
   "repository": {
@@ -11,11 +11,11 @@
     "test": "mocha -R spec"
   },
   "keywords": [
-      "instagram",
-      "hashtag",
-      "scraping",
-      "scrape"
-    ],
+    "instagram",
+    "hashtag",
+    "scraping",
+    "scrape"
+  ],
   "author": "Rizal Yogi Pratama <@rzlyp>",
   "license": "MIT",
   "bugs": {
