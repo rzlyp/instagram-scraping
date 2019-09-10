@@ -68,3 +68,11 @@ ig.deepScrapeTagPage('veranda').then((result)=>{
     console.dir(result);
 })
 ```
+### Scrape User Page
+
+```javascript
+//using username for scraping
+ig.scrapeUserPage('jscmila').then((result)=>{
+    console.dir(result);
+})
+```
