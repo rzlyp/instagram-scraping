@@ -33,7 +33,8 @@ exports.scrapeUserPage = function(username) {
                     ], (err, results)=>{
                             resolve({
                                 total : results.length,
-                                medias : results
+                                medias : results,
+                                user: data.entry_data.ProfilePage[0].graphql.user
                             })   
                     })
             }
