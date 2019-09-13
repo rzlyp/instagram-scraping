@@ -136,6 +136,8 @@ exports.scrapePostCode = function(code) {
         if (!code) return reject(new Error('Argument "code" must be specified'));
 
         request(postURL + code, function(err, response, body){
+            if (err) return reject(err);
+            
             var data = scrape(body);
             if (data && data.entry_data && 
                 data.entry_data.PostPage[0] && 
