@@ -1,6 +1,8 @@
 # instagram-scraping
 
-NodeJS module for loading posts from Instagram by hashtag without API access by means of scraping.
+[![npm downloads](https://img.shields.io/npm/dt/instagram-scraping.svg)](https://npm.im/new-package)
+
+> NodeJS module for loading posts from Instagram by hashtag without API access by means of scraping.
 
 ## Disclamer
 
