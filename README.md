@@ -1,5 +1,6 @@
 # instagram-scraping
 
+[![license](https://img.shields.io/github/license/rzlyp/instagram-scraping.svg)](LICENSE)
 [![npm downloads](https://img.shields.io/npm/dt/instagram-scraping.svg)](https://npm.im/new-package)
 
 > NodeJS module for loading posts from Instagram by hashtag without API access by means of scraping.
