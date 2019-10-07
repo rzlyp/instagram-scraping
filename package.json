@@ -24,8 +24,12 @@
   "homepage": "https://github.com/rzlyp/instagram-scraping#readme",
   "devDependencies": {
     "chai": "3.5.0",
+    "eslint": "^6.4.0",
+    "eslint-config-prettier": "^6.3.0",
+    "eslint-plugin-prettier": "^3.1.1",
     "mocha": "3.1.2",
-    "nock": "9.0.2"
+    "nock": "9.0.2",
+    "prettier": "1.18.2"
   },
   "dependencies": {
     "async": "^2.6.0",

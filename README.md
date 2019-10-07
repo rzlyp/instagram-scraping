@@ -1,11 +1,13 @@
-instagram-scraping
-==============
-NodeJS module for loading posts from Instagram by hashtag without API access by means of scraping.
+# instagram-scraping
 
-	
+[![license](https://img.shields.io/github/license/rzlyp/instagram-scraping.svg)](LICENSE)
+[![npm downloads](https://img.shields.io/npm/dt/instagram-scraping.svg)](https://npm.im/new-package)
+
+> NodeJS module for loading posts from Instagram by hashtag without API access by means of scraping.
 
 ## Disclamer
-Instagram has gone to great lengths to prevent scraping and other unauthorized access to their public content. This module is dependant on the markup the public-facing instagram.com. Should that change this module might also stop working as intended. It also only loads the 17 posts that are displayed on first-load without following pagination to load more images. You should take this into consideration when deciding whether this module will work for you.
+
+Instagram has gone to great lengths to prevent scraping and other unauthorized access to their public content. This module is dependant on the markup the public-facing instagram.com. Should that change this module might also stop working as intended. It also only loads the 12 posts that are displayed on first-load without following pagination to load more images. You should take this into consideration when deciding whether this module will work for you.
 
 ## Installation
 
@@ -20,9 +22,9 @@ There are some limitation of loading instagram data, but enjoy it. i hope it's w
 ```javascript
 var ig = require('instagram-scraping');
 
-ig.scrapeTag('veranda').then((result)=>{
-    console.dir(result);
-})
+ig.scrapeTag('veranda').then(result => {
+  console.dir(result);
+});
 ```
 
 Example response:
@@ -60,19 +62,20 @@ Example response:
     ....
 }
 ```
+
 ### Deep Tag Scraping
 
 ```javascript
-
-ig.deepScrapeTagPage('veranda').then((result)=>{
-    console.dir(result);
-})
+ig.deepScrapeTagPage('veranda').then(result => {
+  console.dir(result);
+});
 ```
+
 ### Scrape User Page
 
 ```javascript
-//using username for scraping
-ig.scrapeUserPage('jscmila').then((result)=>{
-    console.dir(result);
-})
+// using username for scraping
+ig.scrapeUserPage('jscmila').then(result => {
+  console.dir(result);
+});
 ```
