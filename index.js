@@ -25,7 +25,7 @@ exports.scrapeUserPage = function (username) {
                     (callback) => {
                         var medias = [];
                         edges.forEach((post) => {
-                            if (post.node.__typename === 'GraphImage') {
+                            if (post.node.__typename === 'GraphImage' || post.node.__typename === 'GraphVideo') {
                                 medias.push(exports.scrapePostData(post))
                             }
                         });
@@ -118,7 +118,7 @@ exports.scrapeTag = function (tag) {
 };
 
 exports.scrapePostData = function (post) {
-    return {
+    var scrapedData = {
         media_id: post.node.id,
         shortcode: post.node.shortcode,
         text: post.node.edge_media_to_caption.edges[0] && post.node.edge_media_to_caption.edges[0].node.text,
@@ -128,8 +128,15 @@ exports.scrapePostData = function (post) {
         owner_id: post.node.owner.id,
         date: post.node.taken_at_timestamp,
         thumbnail: post.node.thumbnail_src,
-        thumbnail_resource: post.node.thumbnail_resources
+        thumbnail_resource: post.node.thumbnail_resources,
+        is_video: post.node.is_video
     }
+
+    if (post.node.is_video) {
+        scrapedData.video_view_count = post.node.video_view_count;
+    }
+
+    return scrapedData;
 }
 
 exports.scrapePostCode = function (code) {
