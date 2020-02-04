@@ -25,7 +25,7 @@ exports.scrapeUserPage = function (username) {
                     (callback) => {
                         var medias = [];
                         edges.forEach((post) => {
-                            if (post.node.__typename === 'GraphImage') {
+                            if (post.node.__typename === 'GraphImage'||post.node.__typename === 'GraphSidecar') {
                                 medias.push(exports.scrapePostData(post))
                             }
                         });
