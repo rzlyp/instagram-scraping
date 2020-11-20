@@ -1,7 +1,6 @@
 # instagram-scraping
 
-[![license](https://img.shields.io/github/license/rzlyp/instagram-scraping.svg)](LICENSE)
-[![npm downloads](https://img.shields.io/npm/dt/instagram-scraping.svg)](https://npm.im/new-package)
+[![npm downloads](https://img.shields.io/npm/dt/instagram-scraping.svg)](https://npm.im/instagram-scraping)
 
 > NodeJS module for loading posts from Instagram by hashtag without API access by means of scraping.
 
@@ -22,7 +21,7 @@ There are some limitation of loading instagram data, but enjoy it. i hope it's w
 ```javascript
 var ig = require('instagram-scraping');
 
-ig.scrapeTag('veranda').then(result => {
+ig.scrapeTag('veranda').then((result) => {
   console.dir(result);
 });
 ```
@@ -31,42 +30,42 @@ Example response:
 
 ```json
 {
-	"total": 54,
-	"medias": [
-	{
-	"media_id": "1684684359967334824",
-	"text": "Selamat siang komuni!🙋 Sportakular hadir lagi untuk mengawali 2018 kita ini dengan penuh semangat dan kebersamaan, berikut jadwal-jadwalnya : sportakular Voly Kamis,4 Januari 2018 18.00 sd selesai Lap.telkom pinggir monumen Sportakular Futsal Jumat , 5 Januari 2018 17.30-20.00 Lap. Meteor Sportakular Badminton Sabtu,6 Januari2018 19.00-21.00 Lap.Pdam (pinggir ITB) Dicatet ya setiap jadwal kegiatannya, biar tidak terlewatkan karena sayang banget untuk dilewatkan. 😉 dan untuk cabang olahraga lain bakalan mimin share lagi so stay tuned dan selalu ingat: 'Berpartisipasi = Auto Kece😎😎' salam olahraga! #himaik #Ikberaniberkarya #salamsatuik #menujuIKsehat #unikom #sportakular",
-	"comment_count": {
-	"count": 0
-	},
-	"like_count": {
-	"count": 10
-	},
-	"display_url": "https://instagram.fpku1-1.fna.fbcdn.net/t51.2885-15/e35/25024357_207155156521690_1744670180115480576_n.jpg?se=7",
-	"owner_id": "1648294943",
-	"date": 1515050047,
-	"thumbnail": "https://instagram.fpku1-1.fna.fbcdn.net/t51.2885-15/s640x640/sh0.08/e35/c0.134.1076.1076/25024357_207155156521690_1744670180115480576_n.jpg",
-	"thumbnail_resource": [
-		{
-		"src": "https://instagram.fpku1-1.fna.fbcdn.net/t51.2885-15/s150x150/e35/c0.134.1076.1076/25024357_207155156521690_1744670180115480576_n.jpg",
-		"config_width": 150,
-		"config_height": 150
-		},
-		{
-		"src": "https://instagram.fpku1-1.fna.fbcdn.net/t51.2885-15/s240x240/e35/c0.134.1076.1076/25024357_207155156521690_1744670180115480576_n.jpg",
-		"config_width": 240,
-		"config_height": 240
-		},
-	]
-},
-    ....
+  "total": 54,
+  "medias": [
+    {
+      "media_id": "1684684359967334824",
+      "text": "Selamat siang komuni!🙋 Sportakular hadir lagi untuk mengawali 2018 kita ini dengan penuh semangat dan kebersamaan, berikut jadwal-jadwalnya : sportakular Voly Kamis,4 Januari 2018 18.00 sd selesai Lap.telkom pinggir monumen Sportakular Futsal Jumat , 5 Januari 2018 17.30-20.00 Lap. Meteor Sportakular Badminton Sabtu,6 Januari2018 19.00-21.00 Lap.Pdam (pinggir ITB) Dicatet ya setiap jadwal kegiatannya, biar tidak terlewatkan karena sayang banget untuk dilewatkan. 😉 dan untuk cabang olahraga lain bakalan mimin share lagi so stay tuned dan selalu ingat: 'Berpartisipasi = Auto Kece😎😎' salam olahraga! #himaik #Ikberaniberkarya #salamsatuik #menujuIKsehat #unikom #sportakular",
+      "comment_count": {
+        "count": 0
+      },
+      "like_count": {
+        "count": 10
+      },
+      "display_url": "https://instagram.fpku1-1.fna.fbcdn.net/t51.2885-15/e35/25024357_207155156521690_1744670180115480576_n.jpg?se=7",
+      "owner_id": "1648294943",
+      "date": 1515050047,
+      "thumbnail": "https://instagram.fpku1-1.fna.fbcdn.net/t51.2885-15/s640x640/sh0.08/e35/c0.134.1076.1076/25024357_207155156521690_1744670180115480576_n.jpg",
+      "thumbnail_resource": [
+        {
+          "src": "https://instagram.fpku1-1.fna.fbcdn.net/t51.2885-15/s150x150/e35/c0.134.1076.1076/25024357_207155156521690_1744670180115480576_n.jpg",
+          "config_width": 150,
+          "config_height": 150
+        },
+        {
+          "src": "https://instagram.fpku1-1.fna.fbcdn.net/t51.2885-15/s240x240/e35/c0.134.1076.1076/25024357_207155156521690_1744670180115480576_n.jpg",
+          "config_width": 240,
+          "config_height": 240
+        }
+      ]
+    }
+  ]
 }
 ```
 
 ### Deep Tag Scraping
 
 ```javascript
-ig.deepScrapeTagPage('veranda').then(result => {
+ig.deepScrapeTagPage('veranda').then((result) => {
   console.dir(result);
 });
 ```
@@ -75,7 +74,7 @@ ig.deepScrapeTagPage('veranda').then(result => {
 
 ```javascript
 // using username for scraping
-ig.scrapeUserPage('jscmila').then(result => {
+ig.scrapeUserPage('jscmila').then((result) => {
   console.dir(result);
 });
 ```
