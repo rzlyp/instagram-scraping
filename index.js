@@ -1,4 +1,4 @@
-var request = require('request'),
+var axios = require('axios'),
     Promise = require('bluebird'),
     async = require('async');
 
@@ -11,8 +11,11 @@ var userURL = 'https://www.instagram.com/',
 exports.scrapeUserPage = function (username) {
     return new Promise(function (resolve, reject) {
         if (!username) return reject(new Error('Argument "username" must be specified'));
-        request(userURL + username, function (err, response, body) {
-            var data = scrape(body);
+        axios.get(userURL + username, {
+            headers: {
+            'User-Agent': 'Mozilla/5.0 (iPhone; CPU iPhone OS 8_0 like Mac OS X) AppleWebKit/600.1.3 (KHTML, like Gecko) Version/8.0 Mobile/12A4345d Safari/600.1.4'
+        }}).then((result) => {
+            var data = scrape(result.data);
             if (data && data.entry_data &&
                 data.entry_data.ProfilePage &&
                 data.entry_data.ProfilePage[0] &&
@@ -42,6 +45,8 @@ exports.scrapeUserPage = function (username) {
             else {
                 reject(new Error('Error scraping user page "' + username + '"'));
             }
+        }).catch((err) => {
+            reject(new Error('Error scraping user page "' + username + '"'));
         });
     });
 };
@@ -79,16 +84,9 @@ exports.deepScrapeTagPage = function (tag) {
 exports.scrapeTag = function (tag) {
     return new Promise(function (resolve, reject) {
         if (!tag) return reject(new Error('Argument "tag" must be specified'));
-        var options = {
-            url: listURL + tag,
-            headers: {
-                'User-Agent': 'Mozilla/5.0 (iPhone; CPU iPhone OS 8_0 like Mac OS X) AppleWebKit/600.1.3 (KHTML, like Gecko) Version/8.0 Mobile/12A4345d Safari/600.1.4'
-            }
-        };
-        request(options, function (err, response, body) {
-            if (err) return reject(err);
 
-            var data = scrape(body);
+        axios.get(listURL + tag, {headers : {'User-Agent': 'Mozilla/5.0 (iPhone; CPU iPhone OS 8_0 like Mac OS X) AppleWebKit/600.1.3 (KHTML, like Gecko) Version/8.0 Mobile/12A4345d Safari/600.1.4'}}).then((result) => {
+            var data = scrape(result.data);
             var media = data.entry_data && data.entry_data.TagPage && data.entry_data.TagPage[0].graphql.hashtag.edge_hashtag_to_media;
 
             if (data && media) {
@@ -113,7 +111,9 @@ exports.scrapeTag = function (tag) {
             else {
                 reject(new Error('Error scraping tag page "' + tag + '"'));
             }
-        })
+        }).catch((err) => {
+            reject(new Error('Error scraping user page "' + tag + '"'));
+        });
     });
 };
 
@@ -143,10 +143,13 @@ exports.scrapePostCode = function (code) {
     return new Promise(function (resolve, reject) {
         if (!code) return reject(new Error('Argument "code" must be specified'));
 
-        request(postURL + code, function (err, response, body) {
+        axios.get(postURL + code, {
+            headers: {
+            'User-Agent': 'Mozilla/5.0 (iPhone; CPU iPhone OS 8_0 like Mac OS X) AppleWebKit/600.1.3 (KHTML, like Gecko) Version/8.0 Mobile/12A4345d Safari/600.1.4'
+        }}).then((result) => {
             if (err) return reject(err);
 
-            var data = scrape(body);
+            var data = scrape(result.data);
             if (data && data.entry_data &&
                 data.entry_data.PostPage[0] &&
                 data.entry_data.PostPage[0].graphql &&
@@ -156,6 +159,8 @@ exports.scrapePostCode = function (code) {
             else {
                 reject(new Error('Error scraping post page "' + code + '"'));
             }
+        }).catch((err) => {
+            reject(new Error('Error scraping user page "' + code + '"'));
         });
     });
 }
@@ -164,8 +169,11 @@ exports.scrapeLocation = function (id) {
     return new Promise(function (resolve, reject) {
         if (!id) return reject(new Error('Argument "id" must be specified'));
 
-        request(locURL + id, function (err, response, body) {
-            var data = scrape(body);
+        axios.get(localStorage + id, {
+            headers: {
+            'User-Agent': 'Mozilla/5.0 (iPhone; CPU iPhone OS 8_0 like Mac OS X) AppleWebKit/600.1.3 (KHTML, like Gecko) Version/8.0 Mobile/12A4345d Safari/600.1.4'
+        }}).then((result) => {
+            var data = scrape(result.data);
 
             if (data && data.entry_data && (typeof data.entry_data.LocationsPage !== "undefined")) {
                 resolve(data.entry_data.LocationsPage[0].location);
@@ -173,7 +181,9 @@ exports.scrapeLocation = function (id) {
             else {
                 reject(new Error('Error scraping location page "' + id + '"'));
             }
-        });
+        }).catch((err) => {
+            reject(new Error('Error scraping user page "' + id + '"'));
+        });;
     });
 }
 var scrape = function (html) {
