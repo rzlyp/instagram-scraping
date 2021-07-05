@@ -116,6 +116,42 @@ exports.scrapeTag = function (tag) {
         });
     });
 };
+exports.scrapeComment = function (shortcode) {
+    return new Promise(function (resolve, reject) {
+        if (!shortcode) return reject(new Error('Argument "shortcode" must be specified'));
+
+        axios.get(postURL+shortcode, {headers : {'User-Agent': 'Mozilla/5.0 (iPhone; CPU iPhone OS 8_0 like Mac OS X) AppleWebKit/600.1.3 (KHTML, like Gecko) Version/8.0 Mobile/12A4345d Safari/600.1.4'}}).then((result) => {
+            var data = scrape(result.data);
+            var comments = data.entry_data.PostPage[0].graphql.shortcode_media.edge_media_to_parent_comment;
+            if(comments != undefined){
+                let commentList = comments.edges
+                async.waterfall([
+                    (callback) => {
+                        var medias = [];
+                        commentList.forEach((post) => {
+                            // console.log(post)
+                            medias.push(post)
+                        });
+                        callback(null, medias);
+                    }
+                ], (err, results) => {
+                    if(err){
+                        reject(new Error('comment not found for "' + page + '"'));
+                    }
+                    resolve({
+                        total: comments.count,
+                        medias: results
+                    })
+                })
+            }else {
+                reject(new Error('comment not found for "' + page + '"'));
+            }
+
+        }).catch((err) => {
+            reject(new Error('Error scraping page "' + page + '"'));
+        });
+    });
+};
 
 exports.scrapePostData = function (post) {
     var scrapedData = {
@@ -136,7 +172,7 @@ exports.scrapePostData = function (post) {
         scrapedData.video_view_count = post.node.video_view_count;
     }
 
-    return scrapedData;
+    return post;
 }
 
 exports.scrapePostCode = function (code) {

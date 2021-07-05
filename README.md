@@ -61,7 +61,14 @@ Example response:
   ]
 }
 ```
+### Scrape Comment
 
+```javascript
+// using shortcode for scraping comment 
+ig.scrapeComment('CPHnIGbBh1k').then((result) => {
+  console.dir(result);
+});
+```
 ### Deep Tag Scraping
 
 ```javascript
