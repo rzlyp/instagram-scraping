@@ -34,6 +34,7 @@ Example response:
   "medias": [
     {
       "media_id": "1684684359967334824",
+      "shortcode": "CPHnIGbBh1k",
       "text": "Selamat siang komuni!🙋 Sportakular hadir lagi untuk mengawali 2018 kita ini dengan penuh semangat dan kebersamaan, berikut jadwal-jadwalnya : sportakular Voly Kamis,4 Januari 2018 18.00 sd selesai Lap.telkom pinggir monumen Sportakular Futsal Jumat , 5 Januari 2018 17.30-20.00 Lap. Meteor Sportakular Badminton Sabtu,6 Januari2018 19.00-21.00 Lap.Pdam (pinggir ITB) Dicatet ya setiap jadwal kegiatannya, biar tidak terlewatkan karena sayang banget untuk dilewatkan. 😉 dan untuk cabang olahraga lain bakalan mimin share lagi so stay tuned dan selalu ingat: 'Berpartisipasi = Auto Kece😎😎' salam olahraga! #himaik #Ikberaniberkarya #salamsatuik #menujuIKsehat #unikom #sportakular",
       "comment_count": {
         "count": 0
