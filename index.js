@@ -2,19 +2,32 @@ var axios = require('axios'),
     Promise = require('bluebird'),
     async = require('async');
 
+var rapidApiMode = !!process.env.RAPIDAPI_KEY, 
+    rapidApiURL = 'https://instagram40.p.rapidapi.com/proxy';
+
 var userURL = 'https://www.instagram.com/',
     listURL = 'https://www.instagram.com/explore/tags/',
     postURL = 'https://www.instagram.com/p/',
     locURL = 'https://www.instagram.com/explore/locations/',
     dataExp = /window\._sharedData\s?=\s?({.+);<\/script>/;
 
+var headers = {'User-Agent': 'Mozilla/5.0 (iPhone; CPU iPhone OS 8_0 like Mac OS X) AppleWebKit/600.1.3 (KHTML, like Gecko) Version/8.0 Mobile/12A4345d Safari/600.1.4'}
+
+if (rapidApiMode) {
+    headers['x-rapidapi-key'] = process.env.RAPIDAPI_KEY
+}
+
+var proxifyURL = function (url) {
+    if (!rapidApiMode) return url;
+
+    return rapidApiURL + '?url=' + encodeURIComponent(url);
+} 
+
 exports.scrapeUserPage = function (username) {
     return new Promise(function (resolve, reject) {
         if (!username) return reject(new Error('Argument "username" must be specified'));
-        axios.get(userURL + username, {
-            headers: {
-            'User-Agent': 'Mozilla/5.0 (iPhone; CPU iPhone OS 8_0 like Mac OS X) AppleWebKit/600.1.3 (KHTML, like Gecko) Version/8.0 Mobile/12A4345d Safari/600.1.4'
-        }}).then((result) => {
+
+        axios.get(proxifyURL(userURL + username), { headers }).then((result) => {
             var data = scrape(result.data);
             if (data && data.entry_data &&
                 data.entry_data.ProfilePage &&
@@ -55,9 +68,9 @@ exports.deepScrapeTagPage = function (tag) {
     return new Promise(function (resolve, reject) {
         exports.scrapeTag(tag).then(function (tagPage) {
             return Promise.map(tagPage.medias, function (media, i, len) {
-                return exports.scrapePostCode(media.shortcode).then(function (postPage) {
+                return exports.scrapePostCode(media.node.shortcode).then(function (postPage) {
                     tagPage.medias[i] = postPage;
-                    if ((typeof postPage.location !== "undefined") && postPage.location.has_public_page) {
+                    if (postPage.location && postPage.location.has_public_page) {
                         return exports.scrapeLocation(postPage.location.id).then(function (locationPage) {
                             tagPage.media[i].location = locationPage;
                         })
@@ -85,7 +98,7 @@ exports.scrapeTag = function (tag) {
     return new Promise(function (resolve, reject) {
         if (!tag) return reject(new Error('Argument "tag" must be specified'));
 
-        axios.get(listURL + tag, {headers : {'User-Agent': 'Mozilla/5.0 (iPhone; CPU iPhone OS 8_0 like Mac OS X) AppleWebKit/600.1.3 (KHTML, like Gecko) Version/8.0 Mobile/12A4345d Safari/600.1.4'}}).then((result) => {
+        axios.get(proxifyURL(listURL + tag), { headers }).then((result) => {
             var data = scrape(result.data);
             var media = data.entry_data && data.entry_data.TagPage && data.entry_data.TagPage[0].graphql.hashtag.edge_hashtag_to_media;
 
@@ -112,7 +125,7 @@ exports.scrapeTag = function (tag) {
                 reject(new Error('Error scraping tag page "' + tag + '"'));
             }
         }).catch((err) => {
-            reject(new Error('Error scraping user page "' + tag + '"'));
+            reject(new Error('Error scraping tag page "' + tag + '": ' + err.message));
         });
     });
 };
@@ -120,7 +133,7 @@ exports.scrapeComment = function (shortcode) {
     return new Promise(function (resolve, reject) {
         if (!shortcode) return reject(new Error('Argument "shortcode" must be specified'));
 
-        axios.get(postURL+shortcode, {headers : {'User-Agent': 'Mozilla/5.0 (iPhone; CPU iPhone OS 8_0 like Mac OS X) AppleWebKit/600.1.3 (KHTML, like Gecko) Version/8.0 Mobile/12A4345d Safari/600.1.4'}}).then((result) => {
+        axios.get(proxifyURL(postURL+shortcode), { headers }).then((result) => {
             var data = scrape(result.data);
             var comments = data.entry_data.PostPage[0].graphql.shortcode_media.edge_media_to_parent_comment;
             if(comments != undefined){
@@ -179,11 +192,8 @@ exports.scrapePostCode = function (code) {
     return new Promise(function (resolve, reject) {
         if (!code) return reject(new Error('Argument "code" must be specified'));
 
-        axios.get(postURL + code, {
-            headers: {
-            'User-Agent': 'Mozilla/5.0 (iPhone; CPU iPhone OS 8_0 like Mac OS X) AppleWebKit/600.1.3 (KHTML, like Gecko) Version/8.0 Mobile/12A4345d Safari/600.1.4'
-        }}).then((result) => {
-            if (err) return reject(err);
+        axios.get(proxifyURL(postURL + code), { headers }).then((result) => {
+            //if (err) return reject(err);
 
             var data = scrape(result.data);
             if (data && data.entry_data &&
@@ -196,7 +206,7 @@ exports.scrapePostCode = function (code) {
                 reject(new Error('Error scraping post page "' + code + '"'));
             }
         }).catch((err) => {
-            reject(new Error('Error scraping user page "' + code + '"'));
+            reject(new Error('Error scraping post page "' + code + '":' + err));
         });
     });
 }
@@ -205,10 +215,7 @@ exports.scrapeLocation = function (id) {
     return new Promise(function (resolve, reject) {
         if (!id) return reject(new Error('Argument "id" must be specified'));
 
-        axios.get(localStorage + id, {
-            headers: {
-            'User-Agent': 'Mozilla/5.0 (iPhone; CPU iPhone OS 8_0 like Mac OS X) AppleWebKit/600.1.3 (KHTML, like Gecko) Version/8.0 Mobile/12A4345d Safari/600.1.4'
-        }}).then((result) => {
+        axios.get(proxifyURL(locURL + id), { headers }).then((result) => {
             var data = scrape(result.data);
 
             if (data && data.entry_data && (typeof data.entry_data.LocationsPage !== "undefined")) {
