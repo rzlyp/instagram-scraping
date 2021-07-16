@@ -68,9 +68,9 @@ exports.deepScrapeTagPage = function (tag) {
     return new Promise(function (resolve, reject) {
         exports.scrapeTag(tag).then(function (tagPage) {
             return Promise.map(tagPage.medias, function (media, i, len) {
-                return exports.scrapePostCode(media.shortcode).then(function (postPage) {
+                return exports.scrapePostCode(media.node.shortcode).then(function (postPage) {
                     tagPage.medias[i] = postPage;
-                    if ((typeof postPage.location !== "undefined") && postPage.location.has_public_page) {
+                    if (postPage.location && postPage.location.has_public_page) {
                         return exports.scrapeLocation(postPage.location.id).then(function (locationPage) {
                             tagPage.media[i].location = locationPage;
                         })
@@ -125,7 +125,7 @@ exports.scrapeTag = function (tag) {
                 reject(new Error('Error scraping tag page "' + tag + '"'));
             }
         }).catch((err) => {
-            reject(new Error('Error scraping user page "' + tag + '": ' + err.message));
+            reject(new Error('Error scraping tag page "' + tag + '": ' + err.message));
         });
     });
 };
@@ -193,7 +193,7 @@ exports.scrapePostCode = function (code) {
         if (!code) return reject(new Error('Argument "code" must be specified'));
 
         axios.get(proxifyURL(postURL + code), { headers }).then((result) => {
-            if (err) return reject(err);
+            //if (err) return reject(err);
 
             var data = scrape(result.data);
             if (data && data.entry_data &&
@@ -206,7 +206,7 @@ exports.scrapePostCode = function (code) {
                 reject(new Error('Error scraping post page "' + code + '"'));
             }
         }).catch((err) => {
-            reject(new Error('Error scraping user page "' + code + '"'));
+            reject(new Error('Error scraping post page "' + code + '":' + err));
         });
     });
 }
