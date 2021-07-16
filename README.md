@@ -8,6 +8,9 @@
 
 Instagram has gone to great lengths to prevent scraping and other unauthorized access to their public content. This module is dependant on the markup the public-facing instagram.com. Should that change this module might also stop working as intended. It also only loads the 12 posts that are displayed on first-load without following pagination to load more images. You should take this into consideration when deciding whether this module will work for you.
 
+## Cloud Proxy support
+To avoid many scraping errors (`302 redirect to login`, and `429 Rate Limited`) this library now has cloud proxy support (free and paid plans are available, depending on your volume). Subscribe to https://rapidapi.com/restyler/api/instagram40 which is a proxy for Instagram, and specify your RAPIDAPI_KEY to the env variable when launching your scraping script: `RAPIDAPI_KEY=your-key node index.js` - this will route all requests to Instagram through proxies with retries and response quality checks under the hood.
+
 ## Installation
 
 `npm install instagram-scraping`
