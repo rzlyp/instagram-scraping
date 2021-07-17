@@ -1,6 +1,6 @@
 {
   "name": "instagram-scraping",
-  "version": "1.0.15",
+  "version": "1.0.16",
   "description": "NPM module for loading media by hashtag without instagram API",
   "main": "index.js",
   "repository": {
