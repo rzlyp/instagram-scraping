@@ -3,7 +3,7 @@ var axios = require('axios'),
     async = require('async');
 
 var rapidApiMode = !!process.env.RAPIDAPI_KEY, 
-    rapidApiURL = 'https://instagram40.p.rapidapi.com/proxy';
+    rapidApiURL = 'https://instagram130.p.rapidapi.com/proxy';
 
 var userURL = 'https://www.instagram.com/',
     listURL = 'https://www.instagram.com/explore/tags/',
